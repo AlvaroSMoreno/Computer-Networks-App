@@ -1,0 +1,73 @@
+<body>
+	<label>Pago en Cafeteria</label>
+	<button id="init" onclick="Qr()">Iniciar Transacción</button>
+		<div>
+		<label id="text"></label>
+		<label id="saldo"></label>
+	</div>
+  <script>
+
+    function nfcHandler(nfcEvent)
+    {
+      var records = nfcEvent.tagData;
+      var data = nfc.bytesToString(records.payload);
+      alert('Cobro:\n' + data.toString());
+    }
+
+    function startListening()
+    {
+      nfc.addMimeTypeListener('text/pg', nfcHandler, function(){alert('yay!')},function(){alert('no!')});
+    }
+
+    function stopListening()
+    {
+      nfc.removeMimeTypeListener('text/pg', nfcHandler);
+    }
+
+		function Qr()
+		{
+			var saldo_actual = 0;
+			$.get('http://lfserv.duckdns.org:80/api/saldo?matricula='+ matricula,
+				function(data,success){
+					console.log(data);
+					if(!data.status){
+						saldo_actual = data.saldo;
+						document.getElementById("saldo").innerText = "Saldo actual: $" + saldo_actual;
+					}
+				});
+				var value = 0;
+			cordova.plugins.barcodeScanner.scan(
+			   function (result) {
+			        if(!result.cancelled){
+			               // In this case we only want to process QR Codes
+			               if(result.format == "QR_CODE"){
+			                    value = result.text;
+			                    // This is the retrieved content of the qr code
+			                    console.log(value);
+													document.getElementById("text").innerText = "Cobro: $" + value;
+													var new_saldo = parseInt(saldo_actual) - parseInt(value);
+													value = -parseInt(value);
+													alert("Nuevo Saldo: $" + new_saldo);
+													//mandar nuevo saldo al server...
+													var credentials = {matricula:matricula,increment:value};
+													$.post('http://lfserv.duckdns.org:80/api/saldo', credentials,
+														function(data,success){
+															if(!data.status){
+																alert("Transacción exitosa!");
+															}
+														});
+			               }else{
+			                  alert("Sorry, only qr codes this time ;)");
+			               }
+			        }else{
+			          alert("The user has dismissed the scan");
+			        }
+			     },
+			     function (error) {
+			          alert("An error ocurred: " + error);
+			     }
+			);
+		}
+
+  </script>
+<body>

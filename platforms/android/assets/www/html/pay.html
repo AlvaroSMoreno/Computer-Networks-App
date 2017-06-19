@@ -1,0 +1,24 @@
+<body>
+	<label>Pago en Cafeteria</label>
+	<button id="init" onclick="startListening()">Iniciar Transacción</button>
+  <button id="stop" onclick="stopListening()">Terminar Transacción</button>
+  <script>
+    function nfcHandler(nfcEvent)
+    {
+      var tag = nfcEvent.tag;
+      var ndefMessage = tag.ndefMessage;
+      var payload = nfc.bytesToString(ndefMessage[0].payload);
+      alert('Cobro:\n' + payload.toString());
+    }
+
+    function startListening()
+    {
+      nfc.addNdefListener(nfcHandler);
+    }
+
+    function stopListening()
+    {
+      nfc.removeNdefListener(nfcHandler);
+    }
+  </script>
+<body>

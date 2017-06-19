@@ -1,0 +1,21 @@
+<div id="mapid"></div>
+
+<script>
+
+var mymap = L.map('mapid').setView([32.656122, -115.40782], 16);
+L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamVzdXNtbG9wZXpmIiwiYSI6ImNpZXMzMjE1NjAwZm1zYWtqNm1oNDRkbzIifQ.p5AT6CMokHrotmZee14ZZg', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 20
+    }).addTo(mymap);
+$.get('http://lfserv.duckdns.org:80/api/peopleoncampus',
+		function(data,success){
+			console.log(data);
+			if(!data.status){
+                data.forEach(function(u){
+                   var marker = L.marker([u.lat,u.long]).addTo(mymap);
+                   marker.bindPopup("<b>"+u.nombre+"</b><br />"+u.matricula);
+                });
+			}
+		});
+
+</script>

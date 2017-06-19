@@ -1,0 +1,35 @@
+<style>
+	#imagen{
+		width: 40%;
+	}
+</style>
+<body>
+	<center><div id="infoid">
+		<p><img src="img/zorro.png" id="imagen"></p>
+		<p id="matricula">m025821</p>
+		<p id="nombre">daniel</p>
+		<p id="saldo">100</p>
+	</div></center>
+	<div>
+			<button id="start_sharing" onclick="shareInfo();">Empezar a compartir datos</button>
+			<button id="stop_sharing" onclick="stop_sharing()">Dejar de compartir datos</button>
+	</div>
+
+	<script>
+
+		function shareInfo()
+		{
+			var nom = document.getElementById('nombre').innerText;
+			var mat = document.getElementById('matricula').innerText;
+			var obj = {'nombre':nom,'matricula':mat}
+			var records = [ndef.textRecord(JSON.stringify(obj))];
+		  //var records = [ndef.textRecord(JSON.stringify(freddy))];
+		  nfc.share(records);
+		}
+
+		function stop_sharing()
+		{
+			nfc.unshare();
+		}
+	</script>
+</body>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<link rel="stylesheet" href="style.css" type="text/css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="send.js"></script>
+    <script src="menu.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+</head>
+<body class="body" id="loginbody">
+
+<form>
+
+  <div class="imgcontainer text-center">
+	<h1>SocialFox</h1>
+    <img src="zorro.png" alt="Avatar" class="avatar">
+  </div>
+
+  <div class="container">
+    <label><b>Matricula</b></label>
+    <input type="text" placeholder="m025821" name="uname" id="uname" required >
+
+    <label><b>Contraseña</b></label>
+    <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+
+    <button type="submit" onclick="send()">Login</button>
+  </div>
+</form>
+
+</body>
+</html>

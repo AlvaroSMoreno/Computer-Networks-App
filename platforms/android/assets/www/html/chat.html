@@ -1,0 +1,58 @@
+<body id="b">
+  <h1>CHAT</h1>
+  <div id="chat">
+  </div>
+
+  <br>
+  <form>
+    <label for="matTo">Matrícula destinatario: </label>
+    <input id="matTo" name="matTo" type="text" />
+    <br>
+    <label for="message">Mensaje: </label>
+    <input id="message" name="message" type="text" />
+    <input type="button" value="Send" onclick="sendMessage();">
+  </form>
+  <script>
+var xhr = new XMLHttpRequest();
+var xhr2 = new XMLHttpRequest();
+var url="http://javierrizzo.com:3069/get-messages";
+var url2="http://javierrizzo.com:3069/new-message";
+
+xhr.onreadystatechange = function() {
+if(xhr.readyState === 4 && xhr.status === 200) {
+  var data = JSON.parse(xhr.responseText);
+  document.querySelector('#chat').innerHTML  = '';
+  for(var i = 0; i < data.rows.length; i++) {
+    document.querySelector('#chat').innerHTML += '<p>' + data.rows[i].matFrom + ": " + data.rows[i].message + "</p>"
+  }
+  document.querySelector('#chat').scrollTop = document.querySelector('#chat').scrollHeight;
+}
+}
+
+function sendMessage() {
+xhr.open("POST", url2, true);
+xhr.setRequestHeader("Content-type", "application/json");
+xhr.send(JSON.stringify({
+  'matFrom': matricula,
+  'matTo': document.querySelector('#matTo').value,
+  'message': document.querySelector('#message').value
+}));
+  document.querySelector('#message').value = "";
+}
+
+function getNewMessages() {
+xhr.open("POST", url, true);
+xhr.setRequestHeader("Content-type", "application/json");
+xhr.send(JSON.stringify({
+  'matFrom': matricula,
+  'matTo': document.querySelector('#matTo').value
+}));
+}
+
+getNewMessages();
+
+window.setInterval(function() {
+getNewMessages();
+}, 3000);
+  </script>
+</body>
